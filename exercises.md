@@ -30,11 +30,11 @@ critical.
 
 | Metric | Acceptable Low Score Scenario | Critical Low Score Scenario | Action Required |
 |---|---|---|---|
-| Faithfulness | | | |
-| Answer Relevance | | | |
-| Context Recall | | | |
-| Context Precision | | | |
-| Completeness | | | |
+| Faithfulness | Trên factual lookup queries đơn giản, nơi context rõ ràng và answer ngắn gọn. Một số synonymous expressions có thể làm overlap thấp dù thực chất đúng. | Khi answer chứa hallucination nghiêm trọng — claim không tồn tại trong context, đặc biệt với dữ liệu quan trọng (deadlines, amounts, policies). Đây là vấn đề trust/safety. | Điều tra retrieval và prompt. Có thể cần thêm grounding guardrail hoặc cải thiện context quality. |
+| Answer Relevance | Khi question ambiguous hoặc có nhiều cách diễn đạt cùng một ý; answer đúng nhưng không dùng từ khóa y hệt question. | Khi answer hoàn toàn không giải quyết intent của question — ví dụ hỏi về deadline, trả lời về eligibility. Đây là signal của prompt/routing issue. | Kiểm tra intent detection và prompt alignment. Điều chỉnh prompt để focus vào question intent. |
+| Context Recall | Khi corpus có nhiều redundant information; retriever lấy đủ evidence nhưng union overlap không cao do paraphrase. | Khi retriever miss critical evidence chunks — đặc biệt với multi-document questions hoặc Hard/Adversarial cases. Recall thấp kéo theo Completeness thấp. | Cải thiện retriever (BM25 parameters, embedding model, chunk size) hoặc query expansion. |
+| Context Precision | Khi có nhiều relevant chunks nhưng ranking không tối ưu; early chunks đúng nhưng system lấy thêm noise phía sau. | Khi top-ranked chunk hoàn toàn irrelevant — user chỉ đọc đầu tiên và bỏ qua phần còn lại. Precision collapse ở rank 1 là critical. | Cải thiện reranking hoặc retrieval scoring. Kiểm tra query-document alignment logic. |
+| Completeness | Khi expected answer có nhiều optional details mà actual answer bỏ qua; thiếu edge cases hoặc exceptions không ảnh hưởng core correctness. | Khi thiếu mandatory information — conditions, deadlines, required steps — khiến answer không actionable. Đặc biệt critical với procedural questions. | Tăng retrieval coverage và điều chỉnh generation prompt để include all conditions/exceptions. |
 
 ### Exercise 1.2 — Bias trong LLM-as-a-Judge
 
@@ -46,15 +46,30 @@ Ba bias thường gặp:
 
 **Câu 1: Thiết kế experiment phát hiện position bias với ít nhất hai conditions.**
 
-> *Câu trả lời:*
+> **Experiment thiết kế:**
+>
+> Chuẩn bị N cặp (answer_A, answer_B) có chất lượng tương đương (đã được human label đồng ý là cùng điểm). Điều kiện:
+>
+> - **Condition 1 (A trước):** Gửi judge prompt với answer_A xếp TRƯỚC answer_B. Đo distribution scores cho A vs B.
+> - **Condition 2 (B trước):** Gửi cùng cặp nhưng answer_B xếp TRƯỚC answer_A. Đo distribution scores cho B vs A.
+>
+> Nếu trong Condition 1 answer_A được score cao hơn đáng kể so với Condition 2, và ngược lại cho B, thì position bias tồn tại. Measure bằng paired t-test hoặc Wilcoxon giữa hai conditions trên cùng cặp answers. Cần ít nhất 30–50 pairs để có statistical power đủ.
 
 **Câu 2: Làm thế nào giảm verbosity bias bằng rubric design?**
 
-> *Câu trả lời:*
+> Ba cách dùng rubric design giảm verbosity bias:
+>
+> 1. **Normalize by answer length:** Yêu cầu judge đánh giá content density (information per token), không phải raw length. Rubric nêu rõ: "Score 5 không phải vì dài, mà vì mỗi sentence đều bổ sung evidence hoặc clarification mới."
+> 2. **Anti-redundancy clause:** Thêm dimension "Conciseness" vào rubric. Trừ điểm nếu answer lặp lại cùng một ý nhiều lần bằng cách khác nhau. Structure rubric: `(Content_Score × 0.7) + (Conciseness_Score × 0.3)`.
+> 3. **Length cap trong prompt:** Judge prompt chỉ rõ "Evaluate the first 200 tokens of each answer equally, ignoring extra content beyond that cap." Việc cắt ngang giúp answer ngắn không bị disadvantaged về sheer volume.
 
 **Câu 3: Tại sao cần calibrate LLM judge với human labels?**
 
-> *Câu trả lời:*
+> Ba lý do chính:
+>
+> 1. **Absolute vs relative scoring:** LLM judge score trên thang 1–5 nhưng không có intrinsic meaning — "4" có thể là "good" hoặc "average" tùy model. Human labels gắn score với ground truth thực, tạo anchor point để interpret judge scores đúng.
+> 2. **Calibration drift:** LLM có thể trở nên stricter hoặc lenient hơn theo thời gian, temperature, hoặc minor prompt changes. Retraining hoặc prompt update cần re-calibrate để đảm bảo scores nhất quán.
+> 3. **Domain-specific nuance:** Generic "correct" vs "incorrect" khác với nuanced domain như Student Services. Human labels từ domain expert điều chỉnh judge hiểu đúng context — ví dụ, missing deadline date là critical hơn missing a secondary contact method.
 
 ### Exercise 1.3 — Evaluation trong CI/CD
 
@@ -62,13 +77,17 @@ Ba bias thường gặp:
 
 | Metric | Threshold | Lý do |
 |---|---:|---|
-| Faithfulness | | |
-| Answer Relevance | | |
-| Completeness | | |
+| Faithfulness | **0.75** | Faithfulness dưới 0.75 nghĩa là >25% claims trong answer không có evidence. Với Student Services, hallucination về policy/deadline có thể gây hậu quả nghiêm trọng cho sinh viên. Đây là safety-critical metric không thể compromise. |
+| Answer Relevance | **0.70** | Relevance thấp nghĩa là answer không giải quyết question intent. Trong Student Services, một irrelevant answer lãng phí thời gian người dùng và có thể dẫn đến action sai. Threshold 0.70 cho phép minor paraphrase differences nhưng vẫn reject off-topic responses. |
+| Completeness | **0.70** | Completeness dưới 0.70 nghĩa là answer bỏ sót >30% required information (conditions, steps, exceptions). Với procedural questions (registration, refund process), incomplete answer gây bad user experience và có thể require repeated interactions. |
 
 **Câu 2: Khi nào dùng offline evaluation, online evaluation và human review?**
 
-> *Câu trả lời:*
+> - **Offline evaluation:** Dùng khi cần đánh giá trước khi release (CI/CD gate) hoặc sau prompt/retriever/threshold change. Chạy tự động trên golden dataset cố định — nhanh, repeatable, không cần user real traffic. Phù hợp cho regression testing và A/B comparison giữa các model/prompt versions. Trong lab này, `pytest` và `evaluate_answers.py` là offline evaluation.
+>
+> - **Online evaluation:** Dùng khi cần monitor hệ thống đang chạy production với real user traffic. Thu thập actual user feedback, task completion rate, học từ distribution thật mà golden dataset không cover được. Phù hợp khi có đủ volume để detect shifts — ví dụ Langfuse, LangSmith tracking real-time metrics.
+>
+> - **Human review:** Dùng khi cần đánh giá high-stakes cases (scholarship appeals, policy exceptions), khi automated metrics không đủ nuanced, hoặc để calibrate LLM judge. Đắt và chậm nên reserved cho edge cases mà automated pipeline không xử lý được hoặc khi baseline metric thay đổi đáng kể cần human verification trước khi deploy.
 
 ---
 
