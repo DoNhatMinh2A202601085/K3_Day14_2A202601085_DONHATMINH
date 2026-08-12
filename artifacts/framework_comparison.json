@@ -1,0 +1,297 @@
+{
+  "word_overlap": [
+    {
+      "id": "E01",
+      "faithfulness": 0.938,
+      "relevance": 0.923,
+      "completeness": 0.909,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.923
+    },
+    {
+      "id": "E02",
+      "faithfulness": 0.931,
+      "relevance": 0.778,
+      "completeness": 0.875,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.861
+    },
+    {
+      "id": "E03",
+      "faithfulness": 1.0,
+      "relevance": 0.75,
+      "completeness": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 0.887,
+      "overall": 0.917
+    },
+    {
+      "id": "E04",
+      "faithfulness": 1.0,
+      "relevance": 0.857,
+      "completeness": 1.0,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.952
+    },
+    {
+      "id": "E05",
+      "faithfulness": 0.417,
+      "relevance": 0.833,
+      "completeness": 0.1,
+      "context_recall": 0.3,
+      "context_precision": 0.75,
+      "overall": 0.45
+    },
+    {
+      "id": "M01",
+      "faithfulness": 0.72,
+      "relevance": 0.667,
+      "completeness": 0.471,
+      "context_recall": 0.765,
+      "context_precision": 1.0,
+      "overall": 0.619
+    },
+    {
+      "id": "M02",
+      "faithfulness": 0.815,
+      "relevance": 0.667,
+      "completeness": 0.882,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.788
+    },
+    {
+      "id": "M03",
+      "faithfulness": 0.586,
+      "relevance": 0.818,
+      "completeness": 0.5,
+      "context_recall": 1.0,
+      "context_precision": 0.75,
+      "overall": 0.635
+    },
+    {
+      "id": "M04",
+      "faithfulness": 0.833,
+      "relevance": 0.875,
+      "completeness": 0.9,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.869
+    },
+    {
+      "id": "M05",
+      "faithfulness": 0.857,
+      "relevance": 0.867,
+      "completeness": 0.692,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.805
+    },
+    {
+      "id": "M06",
+      "faithfulness": 0.755,
+      "relevance": 0.571,
+      "completeness": 0.786,
+      "context_recall": 1.0,
+      "context_precision": 0.833,
+      "overall": 0.704
+    },
+    {
+      "id": "M07",
+      "faithfulness": 0.931,
+      "relevance": 0.875,
+      "completeness": 0.806,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.871
+    },
+    {
+      "id": "H01",
+      "faithfulness": 1.0,
+      "relevance": 0.476,
+      "completeness": 0.438,
+      "context_recall": 0.906,
+      "context_precision": 1.0,
+      "overall": 0.638
+    },
+    {
+      "id": "H02",
+      "faithfulness": 0.667,
+      "relevance": 0.933,
+      "completeness": 0.364,
+      "context_recall": 0.909,
+      "context_precision": 1.0,
+      "overall": 0.655
+    },
+    {
+      "id": "H03",
+      "faithfulness": 0.87,
+      "relevance": 0.538,
+      "completeness": 0.571,
+      "context_recall": 0.943,
+      "context_precision": 1.0,
+      "overall": 0.66
+    },
+    {
+      "id": "H04",
+      "faithfulness": 0.8,
+      "relevance": 0.692,
+      "completeness": 0.615,
+      "context_recall": 0.923,
+      "context_precision": 1.0,
+      "overall": 0.703
+    },
+    {
+      "id": "H05",
+      "faithfulness": 0.889,
+      "relevance": 0.286,
+      "completeness": 0.48,
+      "context_recall": 1.0,
+      "context_precision": 1.0,
+      "overall": 0.552
+    },
+    {
+      "id": "A01",
+      "faithfulness": 0.0,
+      "relevance": 0.667,
+      "completeness": 0.0,
+      "context_recall": 0.0,
+      "context_precision": 0.0,
+      "overall": 0.222
+    },
+    {
+      "id": "A02",
+      "faithfulness": 0.667,
+      "relevance": 0.045,
+      "completeness": 0.074,
+      "context_recall": 0.519,
+      "context_precision": 0.7,
+      "overall": 0.262
+    },
+    {
+      "id": "A03",
+      "faithfulness": 0.55,
+      "relevance": 0.429,
+      "completeness": 0.258,
+      "context_recall": 0.871,
+      "context_precision": 1.0,
+      "overall": 0.412
+    }
+  ],
+  "ragas": [
+    {
+      "id": "E01",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "E02",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "E03",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "E04",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "E05",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 0.0
+    },
+    {
+      "id": "M01",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M02",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M03",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M04",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M05",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M06",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "M07",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "H01",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "H02",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "H03",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 0.5
+    },
+    {
+      "id": "H04",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "H05",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "A01",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 1.0
+    },
+    {
+      "id": "A02",
+      "ragas_faithfulness": 1.0,
+      "ragas_relevancy": 0.0
+    },
+    {
+      "id": "A03",
+      "ragas_faithfulness": 0.5,
+      "ragas_relevancy": 1.0
+    }
+  ],
+  "summary": {
+    "wo_avg_faithfulness": 0.761,
+    "ragas_avg_faithfulness": 0.975,
+    "wo_avg_relevance": 0.677,
+    "ragas_avg_relevance": 0.875,
+    "delta_faithfulness": 0.214,
+    "delta_relevance": 0.198,
+    "match_count_faithfulness": 10,
+    "match_count_relevance": 8,
+    "total": 20
+  }
+}
